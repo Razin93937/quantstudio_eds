@@ -1,0 +1,87 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quantstudio-eds"
+description = "QuantStudio .eds parser."
+authors = [
+  { name="Sayeed Sajjad Razin", email="razin93937@gmail.com" },
+]
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Operating System :: OS Independent",
+  "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+
+dependencies = [
+  "lxml",
+  "numpy"
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+pandas = ["pandas>=2.1"]
+
+[project.urls]
+Homepage = "https://github.com/razin93937/quantstudio-eds"
+Repository = "https://github.com/razin93937/quantstudio-eds"
+Issues = "https://github.com/razin93937/quantstudio-eds/issues"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/quantstudio_eds"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/src/quantstudio_eds",
+  "/tests",
+  "/README.md",
+  "/LICENSE",
+]
+
+[tool.hatch.envs.default]
+python = "3.10"
+dependencies = [
+  "pytest",
+  "pytest-cov",
+  "ruff",
+  "mypy",
+  "ipykernel",
+  "pre-commit"
+]
+installer = "uv"
+
+[tool.hatch.envs.default.scripts]
+lint = "ruff check ."
+fmt = "ruff format ."
+test = "pytest -q"
+typecheck = "mypy src"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E","F","I","B","UP","N","C90","RUF"]
+ignore = []
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+mypy_path = "src"
