@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import ClassVar
 
 
-@dataclass(frozen=True)
+@dataclass
 class Detector:
     MAPPINGS: ClassVar[dict] = {
         "name": "Name",
@@ -18,14 +18,14 @@ class Detector:
     assay_id: str | None = None
 
 
-@dataclass(frozen=True)
+@dataclass
 class DetectorTask:
     detector: Detector
     task: str
     concentration: str
 
 
-@dataclass(frozen=True)
+@dataclass
 class SampleFeature:
     MAPPINGS: ClassVar[dict] = {
         "name": "Name",
@@ -37,7 +37,7 @@ class SampleFeature:
     custom_property: str | None = None
 
 
-@dataclass(frozen=True)
+@dataclass
 class Allele:
     MAPPINGS: ClassVar[dict] = {
         "name": "Name",
@@ -51,7 +51,7 @@ class Allele:
     color: str
 
 
-@dataclass(frozen=True)
+@dataclass
 class Marker:
     MAPPINGS: ClassVar[dict] = {
         "name": "Name",
@@ -62,16 +62,24 @@ class Marker:
     alleles: list[Allele]
 
 
-@dataclass(frozen=True)
+@dataclass
 class MarkerTask:
     marker: Marker
     task: str
+
+
+@dataclass
+class Dye:
+    dye: str
+    intensities: list[float]
 
 
 class Well:
     def __init__(self, well_index: int, is_omit: bool):
         self.well_index = well_index
         self.is_omit = is_omit
+        self.temperatures: list[float] = []
+        self.dyes: list[Dye] = []
 
     def add_detector_task(self, detector_task: DetectorTask):
         if not hasattr(self, "detector_tasks"):
@@ -88,8 +96,15 @@ class Well:
             self.marker_tasks = []
         self.marker_tasks.append(marker_task)
 
+    def set_temperatures(self, temperatures: list[float]):
+        self.temperatures = temperatures
+
+    def add_dye(self, dye: Dye):
+        self.dyes.append(dye)
+
     def __repr__(self):
         return f"""Well(index={self.well_index}, is_omit={self.is_omit},
     detector_tasks={getattr(self, "detector_tasks", [])},
     samples={getattr(self, "samples", [])},
-    marker_tasks={getattr(self, "marker_tasks", [])})"""
+    marker_tasks={getattr(self, "marker_tasks", [])},
+    temperatures={getattr(self, "temperatures", [])})"""

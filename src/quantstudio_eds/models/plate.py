@@ -43,9 +43,19 @@ class Plate:
         self.plate_kind = plate_kind
         self.barcode = barcode
         self.wells: dict[int, Well] = {}
+        self.cycle_count: int | None = None
+        self.tc_stage_flags: list[int] | None = None
+        self.collection_points: list[dict] | None = None
 
     def add_well(self, well: Well):
         self.wells[well.well_index] = well
+
+    def set_multicomponent_data(
+        self, cycle_count: int, tc_stage_flags: list[int], collection_points: list[dict]
+    ):
+        self.cycle_count = cycle_count
+        self.tc_stage_flags = tc_stage_flags
+        self.collection_points = collection_points
 
     def __repr__(self):
         return f"""Plate(name={self.name}, description={self.description},
