@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import ClassVar
 
+from quantstudio_eds.models.setting import SettingsGroup
 from quantstudio_eds.models.well import Well
 
 
@@ -56,6 +57,9 @@ class Plate:
         self.cycle_count = cycle_count
         self.tc_stage_flags = tc_stage_flags
         self.collection_points = collection_points
+
+    def set_analaysis_protocol(self, analysis_protocol: list[SettingsGroup]):
+        self.analysis_protocol = analysis_protocol
 
     def __repr__(self):
         return f"""Plate(name={self.name}, description={self.description},
