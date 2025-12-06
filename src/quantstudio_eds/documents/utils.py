@@ -30,3 +30,16 @@ def parse_bracketed_floats(text: str) -> list[float]:
 
 def parse_bracketed_ints(text: str) -> list[int]:
     return [int(x) for x in parse_bracketed_list(text)]
+
+
+def get_jaxb_setting_value(jaxb_setting_value):
+    if jaxb_setting_value.xpath(".//JaxbValueItem/@type")[0] == "String":
+        return jaxb_setting_value.xpath(".//JaxbValueItem/StringValue")[0].text
+    elif jaxb_setting_value.xpath(".//JaxbValueItem/@type")[0] == "Integer":
+        return int(jaxb_setting_value.xpath(".//JaxbValueItem/IntValue")[0].text)
+    elif jaxb_setting_value.xpath(".//JaxbValueItem/@type")[0] == "Boolean":
+        return jaxb_setting_value.xpath(".//JaxbValueItem/BooleanValue")[0].text == "true"
+    elif jaxb_setting_value.xpath(".//JaxbValueItem/@type")[0] == "Double":
+        return float(jaxb_setting_value.xpath(".//JaxbValueItem/DoubleValue")[0].text)
+    else:
+        raise ValueError("Invalid JaxbValueItem")

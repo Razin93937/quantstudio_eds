@@ -10,7 +10,7 @@ PATHS = ["apldbio/sds/plate_setup.xml"]
 
 
 def present(z: EDSZip) -> bool:
-    return z.exists("apldbio/sds/plate_setup.xml")
+    return z.exists(PATHS[0])
 
 
 def _parse_plate_kind(root: etree._Element) -> PlateKind:

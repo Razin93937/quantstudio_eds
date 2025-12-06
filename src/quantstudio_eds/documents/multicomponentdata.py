@@ -11,7 +11,7 @@ PATHS = ["apldbio/sds/multicomponentdata.xml"]
 
 
 def present(z: EDSZip) -> bool:
-    return z.exists("apldbio/sds/multicomponentdata.xml")
+    return z.exists(PATHS[0])
 
 
 def _parse_collection_points(text: str) -> list[dict]:
@@ -30,7 +30,7 @@ def _parse_collection_points(text: str) -> list[dict]:
     ]
 
 
-def parse(z: EDSZip, plate: Plate) -> dict[int, dict[str, list[float]]]:
+def parse(z: EDSZip, plate: Plate) -> Plate:
     root = z.read_and_parse_xml(PATHS[0])
     well_count = int(root.findtext(".//WellCount"))
     cycle_count = int(root.findtext(".//CycleCount"))
